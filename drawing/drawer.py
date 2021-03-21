@@ -13,7 +13,7 @@ from os.path import isfile, join
 
 from colors import color_palette, Palette
 
-FONTS = ["Skybird", "KBTrueBeliever", "KBPayTheLady", ""]
+FONTS = ["Skybird", "KBTrueBeliever", "KBPayTheLady"]
 ELEMENTS = [join('elements', f) for f in listdir('elements') if isfile(join('elements', f))]
 with open("gradients.json") as f:
     GRADIENTS = json.load(f)["gradients"]
@@ -70,7 +70,7 @@ def draw_logo(palette: Palette, fname='example.png'):
 
         Context.text_path("letaem")
 
-        if random.random() > 0.5:
+        if random.random() > 1:
             gr = GRADIENTS[random.randint(0, len(GRADIENTS))]
             lg1 = cairo.LinearGradient(text_x, text_y, 500, 500)
             lg1.add_color_stop_rgb(0, *map(lambda x: x / 255, gr[0]))
@@ -83,7 +83,7 @@ def draw_logo(palette: Palette, fname='example.png'):
         else:
             Context.stroke()
 
-    """doc = ss.Document()
+    doc = ss.Document()
 
     layout1 = ss.HBoxLayout()
     layout1.setSpacing(-WIDTH)
@@ -92,7 +92,7 @@ def draw_logo(palette: Palette, fname='example.png'):
         el = random.choice(ELEMENTS)
         layout1.addSVG(el, alignment=ss.AlignHCenter | ss.AlignVCenter)
     doc.setLayout(layout1)
-    doc.save(fname)"""
+    doc.save(fname)
 
 
 def generate_variations(p, n=10):

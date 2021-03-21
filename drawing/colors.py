@@ -4,7 +4,7 @@ import random
 import requests
 
 with open("palettes.json") as f:
-    data = json.load(f)["lebedev"]
+    data = json.load(f)["rasskazchikov"]
 
 
 class Palette:
