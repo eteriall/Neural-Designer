@@ -26,7 +26,7 @@ def get_recolored_element(element_name, color):
         return None
 
 
-def draw_logo(palette: Palette, fname='example.png'):
+def draw_logo(palette: Palette, fname='example.png', add_elems=False, rects_max_n=2, poly_max_n=4):
     WIDTH, HEIGHT = 512, 512
     with cairo.SVGSurface(fname, WIDTH, HEIGHT) as surface:
 
@@ -39,23 +39,36 @@ def draw_logo(palette: Palette, fname='example.png'):
         ctx.set_source_rgb(*c)
         ctx.fill()"""
 
-        for _ in range(2):
+        r = [cairo.LINE_JOIN_MITER, cairo.LINE_JOIN_BEVEL, cairo.LINE_JOIN_ROUND]
+        ctx.set_line_join(random.choice(r))
+
+        for _ in range(rects_max_n):
             x, y = random.random(), random.random()
-            ctx.rectangle(x, y, x + random.random() - 0.5, y + random.random() + 0.3)
+            ctx.rectangle(x, y, random.random(), random.random())
             c = palette.next()
             ctx.set_source_rgb(*c)
             ctx.fill()
 
-        for _ in range(random.randint(0, 3)):
+        for _ in range(random.randint(poly_max_n // 2, poly_max_n)):
             points = [(random.random(), random.random()) for _ in range(random.randint(3, 5))]
+
             if random.random() < 0.5:
                 ctx.curve_to(*np.array(points[:3]).flatten())
             else:
                 ctx.move_to(*points[0])
                 for point in points[1:]:
                     ctx.line_to(*point)
+
             ctx.close_path()
-            ctx.set_source_rgb(*palette.next())
+            if random.random() < 0.7:
+                ctx.set_source_rgb(*palette.next())
+            else:
+                gr = GRADIENTS[random.randint(0, len(GRADIENTS))]
+                lg1 = cairo.LinearGradient(*points[0], *points[-1])
+                lg1.add_color_stop_rgb(0, *map(lambda x: x / 255, gr[0]))
+                lg1.add_color_stop_rgb(0.5, *map(lambda x: x / 255, gr[1]))
+                ctx.set_source(lg1)
+
             ctx.set_line_width(random.randint(1, 10) / 100)
             if random.random() < 0.6:
                 ctx.stroke()
@@ -65,12 +78,12 @@ def draw_logo(palette: Palette, fname='example.png'):
         Context = cairo.Context(surface)
         Context.set_font_size(100)
         Context.select_font_face(random.choice(FONTS), cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
-        text_x, text_y = random.randint(0, WIDTH - 200), random.randint(0 + 200, HEIGHT - 200)
+        text_x, text_y = random.randint(0, WIDTH // 4), random.randint(0 + 200, HEIGHT - 200)
         Context.move_to(text_x, text_y)
 
         Context.text_path("letaem")
 
-        if random.random() > 1:
+        if random.random() > 0.7:
             gr = GRADIENTS[random.randint(0, len(GRADIENTS))]
             lg1 = cairo.LinearGradient(text_x, text_y, 500, 500)
             lg1.add_color_stop_rgb(0, *map(lambda x: x / 255, gr[0]))
@@ -82,26 +95,26 @@ def draw_logo(palette: Palette, fname='example.png'):
             Context.fill()
         else:
             Context.stroke()
+    if add_elems:
+        doc = ss.Document()
 
-    doc = ss.Document()
-
-    layout1 = ss.HBoxLayout()
-    layout1.setSpacing(-WIDTH)
-    layout1.addSVG(fname, alignment=ss.AlignHCenter | ss.AlignVCenter)
-    for _ in range(1):
-        el = random.choice(ELEMENTS)
-        layout1.addSVG(el, alignment=ss.AlignHCenter | ss.AlignVCenter)
-    doc.setLayout(layout1)
-    doc.save(fname)
+        layout1 = ss.HBoxLayout()
+        layout1.setSpacing(-WIDTH)
+        layout1.addSVG(fname, alignment=ss.AlignHCenter | ss.AlignVCenter)
+        for _ in range(1):
+            el = random.choice(ELEMENTS)
+            layout1.addSVG(el, alignment=ss.AlignHCenter | ss.AlignVCenter)
+        doc.setLayout(layout1)
+        doc.save(fname)
 
 
 def generate_variations(p, n=10):
     for i in range(n):
-        draw_logo(p, fname=f'images/{i}.svg')
+        draw_logo(p, fname=f'images/{i}.svg', rects_max_n=0, poly_max_n=4)
         p.change_palette()
 
 
 t = time()
 p = Palette(convert=True)
-generate_variations(p, n=10)
+generate_variations(p, n=100)
 print(time() - t)
