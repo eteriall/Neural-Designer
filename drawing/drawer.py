@@ -13,8 +13,11 @@ from os.path import isfile, join
 
 from colors import color_palette, Palette
 
+# Load All elements
 FONTS = ["Skybird", "KBTrueBeliever", "KBPayTheLady"]
 ELEMENTS = [join('elements', f) for f in listdir('elements') if isfile(join('elements', f))]
+with open("palettes.json") as f:
+    PALETTES = json.load(f)
 with open("gradients.json") as f:
     GRADIENTS = json.load(f)["gradients"]
 
@@ -26,12 +29,20 @@ def get_recolored_element(element_name, color):
         return None
 
 
-def draw_logo(palette: Palette, fname='example.png', add_elems=False, rects_max_n=2, poly_max_n=4):
-    WIDTH, HEIGHT = 512, 512
-    with cairo.SVGSurface(fname, WIDTH, HEIGHT) as surface:
+# deprecated def
+def draw_logo_legacy(palette: Palette,
+                     file_name: str = 'example.png',
+                     add_svg_elements: bool = False,
+                     rects_max_n: int = 2,
+                     poly_max_n: int = 4,
+                     color_style: str = 'smooth',
+                     sharpen: float = 0.5,
+                     image_size: tuple = (512, 512)):
+    # Create svg surface
+    with cairo.SVGSurface(file_name, image_size[0], image_size[1]) as surface:
 
         ctx = cairo.Context(surface)
-        ctx.scale(WIDTH, HEIGHT)
+        ctx.scale(image_size[0], image_size[1])
 
         """ctx.rectangle(0, 0, 1, 1)
         c = palette.next()
@@ -49,6 +60,7 @@ def draw_logo(palette: Palette, fname='example.png', add_elems=False, rects_max_
             ctx.set_source_rgb(*c)
             ctx.fill()
 
+        #
         for _ in range(random.randint(poly_max_n // 2, poly_max_n)):
             points = [(random.random(), random.random()) for _ in range(random.randint(3, 5))]
 
@@ -78,11 +90,12 @@ def draw_logo(palette: Palette, fname='example.png', add_elems=False, rects_max_
         Context = cairo.Context(surface)
         Context.set_font_size(100)
         Context.select_font_face(random.choice(FONTS), cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
-        text_x, text_y = random.randint(0, WIDTH // 4), random.randint(0 + 200, HEIGHT - 200)
+        text_x, text_y = random.randint(0, image_size[0] // 4), random.randint(0 + 200, image_size[1] - 200)
         Context.move_to(text_x, text_y)
 
         Context.text_path("letaem")
 
+        # Fill text
         if random.random() > 0.7:
             gr = GRADIENTS[random.randint(0, len(GRADIENTS))]
             lg1 = cairo.LinearGradient(text_x, text_y, 500, 500)
@@ -91,30 +104,91 @@ def draw_logo(palette: Palette, fname='example.png', add_elems=False, rects_max_
             Context.set_source(lg1)
         else:
             Context.set_source_rgb(0, 0, 0)
+
         if random.random() < 0.6:
             Context.fill()
         else:
             Context.stroke()
-    if add_elems:
+    if add_svg_elements:
         doc = ss.Document()
 
         layout1 = ss.HBoxLayout()
-        layout1.setSpacing(-WIDTH)
-        layout1.addSVG(fname, alignment=ss.AlignHCenter | ss.AlignVCenter)
+        layout1.setSpacing(-image_size[0])
+        layout1.addSVG(file_name, alignment=ss.AlignHCenter | ss.AlignVCenter)
         for _ in range(1):
             el = random.choice(ELEMENTS)
             layout1.addSVG(el, alignment=ss.AlignHCenter | ss.AlignVCenter)
         doc.setLayout(layout1)
-        doc.save(fname)
+        doc.save(file_name)
+
+
+def draw_svg_design(file_name: str = 'example.png',
+                    add_svg_elements: bool = False,
+                    rects_max_n: int = 2,
+                    poly_max_n: int = 4,
+                    color_style: str = 'smooth',
+                    sharpen: float = 0.5,
+                    image_size: tuple = (512, 512)):
+    import drawSvg as draw
+    d = draw.Drawing(200, 100, origin='center', displayInline=False)
+    d.append(draw.Lines(-80, -45,
+                        70, -49,
+                        95, 49,
+                        -90, 40,
+                        close=False,
+                        fill='#eeee00',
+                        stroke='black'))
+
+    # Draw a rectangle
+    r = draw.Rectangle(-80,0,40,50, fill='#1248ff')
+    r.appendTitle("Our first rectangle")  # Add a tooltip
+    d.append(r)
+
+    # Draw a circle
+    d.append(draw.Circle(-40, -10, 30,
+                         fill='red', stroke_width=2, stroke='black'))
+
+    # Draw an arbitrary path (a triangle in this case)
+    p = draw.Path(stroke_width=2, stroke='lime',
+                  fill='black', fill_opacity=0.2)
+    p.M(-10, 20)  # Start path at point (-10, 20)
+    p.C(30, -10, 30, 50, 70, 20)  # Draw a curve to (70, 20)
+    d.append(p)
+
+    # Draw text
+    d.append(draw.Text('Basic text', 8, -10, 35, fill='blue'))  # Text with font size 8
+    d.append(draw.Text('Path text', 8, path=p, text_anchor='start', valign='middle'))
+    d.append(draw.Text(['Multi-line', 'text'], 8, path=p, text_anchor='end'))
+
+    # Draw multiple circular arcs
+    d.append(draw.ArcLine(60,-20,20,60,270,
+                          stroke='red', stroke_width=5, fill='red', fill_opacity=0.2))
+    d.append(draw.Arc(60,-20,20,60,270,cw=False,
+                      stroke='green', stroke_width=3, fill='none'))
+    d.append(draw.Arc(60,-20,20,270,60,cw=True,
+                      stroke='blue', stroke_width=1, fill='black', fill_opacity=0.3))
+
+    # Draw arrows
+    arrow = draw.Marker(-0.1, -0.5, 0.9, 0.5, scale=4, orient='auto')
+    arrow.append(draw.Lines(-0.1, -0.5, -0.1, 0.5, 0.9, 0, fill='red', close=True))
+    p = draw.Path(stroke='red', stroke_width=2, fill='none',
+                  marker_end=arrow)  # Add an arrow to the end of a path
+    p.M(20, -40).L(20, -27).L(0, -20)  # Chain multiple path operations
+    d.append(p)
+    d.append(draw.Line(30, -20, 0, -10,
+                       stroke='red', stroke_width=2, fill='none',
+                       marker_end=arrow))  # Add an arrow to the end of a line
+
+    d.setPixelScale(2)  # Set number of pixels per geometry unit
+    #d.setRenderSize(400,200)  # Alternative to setPixelScale
+    d.saveSvg('example.svg')
 
 
 def generate_variations(p, n=10):
     for i in range(n):
-        draw_logo(p, fname=f'images/{i}.svg', rects_max_n=0, poly_max_n=4)
+        draw_logo_legacy(p, file_name=f'images/{i}.svg', rects_max_n=3, poly_max_n=4)
         p.change_palette()
 
-
-t = time()
-p = Palette(convert=True)
-generate_variations(p, n=100)
-print(time() - t)
+generate_variations(Palette(palette_name='epic'))
+"""draw_svg_design()
+print(12312)"""

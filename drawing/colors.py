@@ -3,27 +3,24 @@ import random
 
 import requests
 
-with open("palettes.json") as f:
-    data = json.load(f)["lebedev"]
-
 
 class Palette:
-    def __init__(self, palette=None, convert=False):
-
-        if palette is not None:
-            if convert:
-                self.palette = list(map(lambda x: tuple(map(lambda y: y / 255, x)), palette))
-            else:
-                self.palette = palette
+    def __init__(self,
+                 palette_name: str = 'smooth',
+                 convert: int = False):
+        with open("palettes.json") as f:
+            self.palettes = json.load(f)[palette_name]
+        if convert:
+            self.palette = list(map(lambda x: tuple(map(lambda y: y / 255, x)), self.palettes))
         else:
-            self.palette = data[random.randint(0, len(data) - 1)]
+            self.palette = self.palettes[random.randint(0, len(self.palettes) - 1)]
         self.last_n = 0
 
     def shuffle(self):
         random.shuffle(self.palette)
 
     def change_palette(self):
-        self.palette = data[random.randint(0, len(data) - 1)]
+        self.palette = self.palettes[random.randint(0, len(self.palettes) - 1)]
         self.palette = list(map(lambda x: tuple(map(lambda y: y / 255, x)), self.palette))
 
     def __getitem__(self, item):
@@ -42,4 +39,3 @@ def color_palette(model='default'):
     js = {"model": model}
     palette = requests.get('http://colormind.io/api/', json=js).json()['result']
     return palette
-
