@@ -1,3 +1,4 @@
+import itertools
 import json
 import math
 from time import time
@@ -7,19 +8,37 @@ import numpy as np
 from numpy import random
 from random import choice
 import svg_stack as ss
+import drawSvg as draw
 
 from os import listdir
 from os.path import isfile, join
 
-from colors import color_palette, Palette
+from .colors import color_palette, Palette
 
 # Load All elements
 FONTS = ["Skybird", "KBTrueBeliever", "KBPayTheLady"]
-ELEMENTS = [join('elements', f) for f in listdir('elements') if isfile(join('elements', f))]
-with open("palettes.json") as f:
+resources_dir = 'drawing'
+ELEMENTS = [join(resources_dir + '/elements', f) for f in listdir(resources_dir + '/elements') if
+            isfile(join(resources_dir + '/elements', f))]
+with open(resources_dir + "/palettes.json") as f:
     PALETTES = json.load(f)
-with open("gradients.json") as f:
+with open(resources_dir + "/gradients.json") as f:
     GRADIENTS = json.load(f)["gradients"]
+
+
+class Style(draw.DrawingDef):
+    TAG_NAME = "style"
+
+    def __init__(self, import_statement, **kwargs):
+        self.import_statement = import_statement
+        super().__init__(**kwargs, type="text/css")
+
+    def writeSvgElement(self, idGen, isDuplicate, outputFile, dryRun, forceDup=False):
+        outputFile.write(f'<style type="text/css">{self.import_statement}</style>')
+
+
+class ImportStatement(draw.DrawingBasicElement):
+    pass
 
 
 def get_recolored_element(element_name, color):
@@ -125,24 +144,42 @@ def draw_logo_legacy(palette: Palette,
 def draw_svg_design(file_name: str = 'example.png',
                     add_svg_elements: bool = False,
                     rects_max_n: int = 2,
-                    poly_max_n: int = 4,
+                    poly_max_n: int = 3,
+                    poly_max_n_points: int = 4,
                     color_style: str = 'smooth',
                     sharpen: float = 0.5,
-                    image_size: tuple = (512, 512)):
-    import drawSvg as draw
-    d = draw.Drawing(200, 100, origin='center', displayInline=False)
-    d.append(draw.Lines(-80, -45,
-                        70, -49,
-                        95, 49,
-                        -90, 40,
-                        close=False,
-                        fill='#eeee00',
-                        stroke='black'))
+                    image_size: tuple = (512, 512),
+                    margin: tuple = (30, 30)):
+    p = Palette(color_style)
+    d = draw.Drawing(image_size[0], image_size[1], displayInline=False)
 
-    # Draw a rectangle
-    r = draw.Rectangle(-80,0,40,50, fill='#1248ff')
-    r.appendTitle("Our first rectangle")  # Add a tooltip
+    import_statement = Style('@import url(http://fonts.googleapis.com/css?family=Dela+Gothic+One);')
+    d.append(import_statement)
+
+    r = draw.Rectangle(0, 0, image_size[0], image_size[1], fill='#FFFFFF')
     d.append(r)
+
+    # Drawing polygons
+    for _ in range(0, poly_max_n):
+        # Generating points for polygon
+        points_ = [(random.randint(0 + margin[0], image_size[0] - margin[0]),
+                    random.randint(0 + margin[1], image_size[1] - margin[1]))
+                   for _ in range(random.randint(3, poly_max_n_points))]
+
+        # Concatenating all coordinates
+        points = list(itertools.chain(*points_))
+
+        # Drawing
+        d.append(draw.Lines(*points,
+                            close=False,
+                            fill=p.next_rgb()))
+
+    # Draw text
+    x, y = random.randint(margin[0], image_size[0] // 2), random.randint(margin[1] * 2, image_size[1] - margin[1] * 2)
+    d.append(draw.Text('Letaem', 70, x, y, fill='Black', font_family="Dela Gothic One"))
+
+    """ # Draw a rectangle
+    
 
     # Draw a circle
     d.append(draw.Circle(-40, -10, 30,
@@ -155,17 +192,16 @@ def draw_svg_design(file_name: str = 'example.png',
     p.C(30, -10, 30, 50, 70, 20)  # Draw a curve to (70, 20)
     d.append(p)
 
-    # Draw text
-    d.append(draw.Text('Basic text', 8, -10, 35, fill='blue'))  # Text with font size 8
+    
     d.append(draw.Text('Path text', 8, path=p, text_anchor='start', valign='middle'))
     d.append(draw.Text(['Multi-line', 'text'], 8, path=p, text_anchor='end'))
 
     # Draw multiple circular arcs
-    d.append(draw.ArcLine(60,-20,20,60,270,
+    d.append(draw.ArcLine(60, -20, 20, 60, 270,
                           stroke='red', stroke_width=5, fill='red', fill_opacity=0.2))
-    d.append(draw.Arc(60,-20,20,60,270,cw=False,
+    d.append(draw.Arc(60, -20, 20, 60, 270, cw=False,
                       stroke='green', stroke_width=3, fill='none'))
-    d.append(draw.Arc(60,-20,20,270,60,cw=True,
+    d.append(draw.Arc(60, -20, 20, 270, 60, cw=True,
                       stroke='blue', stroke_width=1, fill='black', fill_opacity=0.3))
 
     # Draw arrows
@@ -180,15 +216,11 @@ def draw_svg_design(file_name: str = 'example.png',
                        marker_end=arrow))  # Add an arrow to the end of a line
 
     d.setPixelScale(2)  # Set number of pixels per geometry unit
-    #d.setRenderSize(400,200)  # Alternative to setPixelScale
-    d.saveSvg('example.svg')
+    # d.setRenderSize(400,200)  # Alternative to setPixelScale"""
+    return d.asSvg()
 
 
 def generate_variations(p, n=10):
     for i in range(n):
         draw_logo_legacy(p, file_name=f'images/{i}.svg', rects_max_n=3, poly_max_n=4)
         p.change_palette()
-
-generate_variations(Palette(palette_name='epic'))
-"""draw_svg_design()
-print(12312)"""

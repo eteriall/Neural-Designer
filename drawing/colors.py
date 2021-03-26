@@ -3,12 +3,14 @@ import random
 
 import requests
 
+resource_dir = 'drawing'
+
 
 class Palette:
     def __init__(self,
                  palette_name: str = 'smooth',
                  convert: int = False):
-        with open("palettes.json") as f:
+        with open(resource_dir + "/palettes.json") as f:
             self.palettes = json.load(f)[palette_name]
         if convert:
             self.palette = list(map(lambda x: tuple(map(lambda y: y / 255, x)), self.palettes))
@@ -33,6 +35,10 @@ class Palette:
             self.last_n += 1
             l = self.palette[self.last_n % len(self.palette)]
         return l
+
+    def next_rgb(self):
+        r, g, b = self.next()
+        return f"rgb({r}, {g}, {b})"
 
 
 def color_palette(model='default'):
