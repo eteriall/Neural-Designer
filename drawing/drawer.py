@@ -1,29 +1,46 @@
 import itertools
 import json
-import math
-from time import time
-import io
-import cairo
-import numpy as np
-from numpy import random
-from random import choice
-import svg_stack as ss
-import drawSvg as draw
-
+import os
 from os import listdir
-from os.path import isfile, join
+from os import path
 
-from .colors import color_palette, Palette
+import cairo
+import drawSvg as draw
+import numpy as np
+import svg_stack as ss
+from numpy import random
+
+from .colors import Palette
 
 # Load All elements
-FONTS = ["Skybird", "KBTrueBeliever", "KBPayTheLady"]
-resources_dir = 'drawing'
-ELEMENTS = [join(resources_dir + '/elements', f) for f in listdir(resources_dir + '/elements') if
-            isfile(join(resources_dir + '/elements', f))]
-with open(resources_dir + "/palettes.json") as f:
-    PALETTES = json.load(f)
-with open(resources_dir + "/gradients.json") as f:
-    GRADIENTS = json.load(f)["gradients"]
+RESOURCES_DIRECTORY = os.environ.get("RESOURCES_DIR", "")
+elements_directory_name = os.environ.get("ELEMENTS_DIR", "")
+fonts_file_name = os.environ.get("FONTS_TXT_FILE", "installed_fonts.txt")
+palettes_file_name = os.environ.get("PALETTES_JSON_FILE", "palettes.json")
+gradients_file_name = os.environ.get("GRADIENTS_JSON_FILE", "gradients.json")
+with open(path.join(RESOURCES_DIRECTORY, fonts_file_name)) as fonts_file:
+    FONTS = tuple(filter(lambda x: x.strip() != '', fonts_file.read().split('\n')))
+with open(path.join(RESOURCES_DIRECTORY, palettes_file_name)) as palettes_file:
+    PALETTES = json.load(palettes_file)
+with open(path.join(RESOURCES_DIRECTORY, gradients_file_name)) as gradients_file:
+    GRADIENTS = json.load(gradients_file)["gradients"]
+elements_path = path.join(RESOURCES_DIRECTORY, elements_directory_name)
+ELEMENTS = [f for f in listdir(elements_path) if path.isfile(path.join(elements_path, f))]
+
+
+class LogoData:
+    def __init__(self, **kwargs):
+        self.seed = kwargs.get("seed", 0)
+        self.text_color = kwargs.get("text_color", (0, 0, 0))
+        self.text_font = kwargs.get("text_font", "Dela Gothic One")
+
+    def jsonify(self):
+        return {"text_font": self.text_font,
+                "text_color": self.text_color,
+                "seed": self.seed}
+
+    def __call__(self, *args, **kwargs):
+        self.jsonify()
 
 
 class Style(draw.DrawingDef):
@@ -147,17 +164,27 @@ def draw_svg_design(file_name: str = 'example.png',
                     poly_max_n: int = 3,
                     poly_max_n_points: int = 4,
                     color_style: str = 'smooth',
+                    font_color: tuple = (0, 0, 0),
                     sharpen: float = 0.5,
+                    font_family: str or None = None,
                     image_size: tuple = (512, 512),
-                    margin: tuple = (30, 30)):
+                    margin: tuple = (30, 30),
+                    seed=None) -> tuple:
+    if seed is not None:
+        random.seed(seed)
+    if font_family is None:
+        font_family = random.choice(FONTS)
+
     p = Palette(color_style)
     d = draw.Drawing(image_size[0], image_size[1], displayInline=False)
 
+    # TODO: Add web-fonts
     import_statement = Style('@import url(http://fonts.googleapis.com/css?family=Dela+Gothic+One);')
     d.append(import_statement)
 
-    r = draw.Rectangle(0, 0, image_size[0], image_size[1], fill='#FFFFFF')
-    d.append(r)
+    # Adding background
+    # r = draw.Rectangle(0, 0, image_size[0], image_size[1], fill='#FFFFFF')
+    # d.append(r)
 
     # Drawing polygons
     for _ in range(0, poly_max_n):
@@ -175,8 +202,11 @@ def draw_svg_design(file_name: str = 'example.png',
                             fill=p.next_rgb()))
 
     # Draw text
+    r, g, b = font_color
     x, y = random.randint(margin[0], image_size[0] // 2), random.randint(margin[1] * 2, image_size[1] - margin[1] * 2)
-    d.append(draw.Text('Letaem', 70, x, y, fill='Black', font_family="Dela Gothic One"))
+    d.append(draw.Text('Letaem', 70, x, y, fill=f'rgb({r}, {g}, {b})', font_family=font_family))
+
+    ret_params = {'font_color': font_color, 'font_family': font_family, 'seed': seed}
 
     """ # Draw a rectangle
     
@@ -217,7 +247,7 @@ def draw_svg_design(file_name: str = 'example.png',
 
     d.setPixelScale(2)  # Set number of pixels per geometry unit
     # d.setRenderSize(400,200)  # Alternative to setPixelScale"""
-    return d.asSvg()
+    return ret_params, d.asSvg()
 
 
 def generate_variations(p, n=10):

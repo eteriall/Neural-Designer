@@ -1,17 +1,18 @@
 import json
-import random
+from os import environ, path
+
+import numpy.random as random
 
 import requests
-
-resource_dir = 'drawing'
 
 
 class Palette:
     def __init__(self,
                  palette_name: str = 'smooth',
-                 convert: int = False):
-        with open(resource_dir + "/palettes.json") as f:
-            self.palettes = json.load(f)[palette_name]
+                 convert: int = False, seed=random.randint(0, 100000)):
+        with open(path.join(environ.get("RESOURCES_DIR", ""),
+                            environ.get("PALETTES_JSON_FILE", "palettes.json"))) as palettes_file:
+            self.palettes = json.load(palettes_file)[palette_name]
         if convert:
             self.palette = list(map(lambda x: tuple(map(lambda y: y / 255, x)), self.palettes))
         else:

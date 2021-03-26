@@ -1,7 +1,8 @@
 from os import listdir
 from os.path import isfile, join
 
-ELEMENTS = [join('elements', f) for f in listdir('elements') if isfile(join('elements', f))]
+ELEMENTS = [join('../resources/elements', f) for f in listdir('../resources/elements') if isfile(join(
+    '../resources/elements', f))]
 
 for fname in ELEMENTS:
     with open(fname) as f:
