@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body class="Background">
+
+<div class="top-menu-parent">
+    <div class="top-menu-element"><a href="/explore">Explore</a></div>
+    <div class="top-menu-element"><a href="/api-description">API</a></div>
+    <div class="top-menu-element"><a href="/explore">Source Code</a></div>
+    <div class="top-menu-element"><a href="/about">About</a></div>
+</div>
+
+{% block content %}
+{% endblock %}
+</body>
+</html>

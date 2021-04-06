@@ -3,6 +3,7 @@ import random
 
 from flask import Flask, render_template
 
+from bouba_kiki import bouba_kiki
 from env_setup import env_setup
 
 env_setup()
@@ -13,6 +14,15 @@ from drawing.drawer import draw_svg_design
 app = Flask(__name__)
 
 
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+
 @app.route('/palettes')
 def palettes():
     palette = color_palette()
@@ -20,11 +30,16 @@ def palettes():
     return '\n'.join(map(lambda x: f"<p style='background-color:{x}'>||||||||</p>", colors)) + f'\n{palette}'
 
 
-@app.route('/generate')
-def logo_generator():
+@app.route('/generate/<string:text>')
+def logo_generator(text):
     seed = random.randint(0, 4294967295)
-    params, svg = draw_svg_design(seed=seed, color_style="epic")
+    b_coef = bouba_kiki(text)
+    params, svg = draw_svg_design(seed=seed,
+                                  text=text,
+                                  sharpen=b_coef,
+                                  color_style="epic")
     encoded_output = svg[svg.find('<svg'):]
+
     return render_template("design.html", svg=encoded_output, data=params)
 
 

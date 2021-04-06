@@ -1,0 +1,6 @@
+pycairo
+flask
+drawSvg
+svg-stack
+numpy
+lxml

@@ -159,16 +159,18 @@ def draw_logo_legacy(palette: Palette,
 
 
 def draw_svg_design(file_name: str = 'example.png',
+                    text="Template",
                     add_svg_elements: bool = False,
                     rects_max_n: int = 2,
-                    poly_max_n: int = 5,
+                    poly_max_n: int = 2,
+                    circles_max_n: int = 2,
                     poly_max_n_points: int = 4,
                     color_style: str = 'smooth',
                     font_color: tuple = (0, 0, 0),
                     sharpen: float = 0.5,
                     font_family: str or None = None,
                     image_size: tuple = (512, 512),
-                    margin: tuple = (30, 30),
+                    margin: tuple = (50, 50),
                     seed=None) -> tuple:
     if seed is not None:
         random.seed(seed)
@@ -178,13 +180,10 @@ def draw_svg_design(file_name: str = 'example.png',
     p = Palette(color_style)
     d = draw.Drawing(image_size[0], image_size[1], displayInline=False)
 
-    # TODO: Add web-fonts
     import_statement = Style('@import url(http://fonts.googleapis.com/css?family=Dela+Gothic+One);')
     d.append(import_statement)
 
-    # Adding background
-    # r = draw.Rectangle(0, 0, image_size[0], image_size[1], fill='#FFFFFF')
-    # d.append(r)
+    poly_max_n += int(poly_max_n * sharpen)
 
     # Drawing polygons
     for _ in range(0, poly_max_n):
@@ -196,22 +195,54 @@ def draw_svg_design(file_name: str = 'example.png',
         # Concatenating all coordinates
         points = list(itertools.chain(*points_))
 
+        poly_params = {}
+        if random.random() < 0.6:
+            poly_params["fill"] = p.next_rgb()
+        else:
+            poly_params["stroke"] = p.next_rgb()
+            poly_params["stroke_width"] = random.randint(3, 10)
+            poly_params["fill"] = "rgba(0, 0, 0, 0.001)"
+        if sharpen < 0:
+            poly_params['stroke-linejoin'] = "round"
+        elif sharpen > 0:
+            poly_params['stroke-linejoin'] = "miter"
+        else:
+            poly_params['stroke-linejoin'] = "round" if random.random() > 0.5 else "miter"
         # Drawing
         d.append(draw.Lines(*points,
-                            close=False,
-                            fill=p.next_rgb(),
-                            stroke="black"))
+                            close=True,
+                            **poly_params))
 
-    s = random.randint(30, 100)
-    cx, cy = random.randint(margin[0], image_size[0] - s // 2), random.randint(margin[1], image_size[1] - s // 2)
-    circle = draw.Circle(cx, cy, s, fill=p.next_rgb())
-    d.append(circle)
-    ret_params = {'font_color': font_color, 'font_family': font_family, 'seed': seed}
+    circles_max_n += int(circles_max_n * -sharpen)
+
+    for _ in range(circles_max_n):
+
+        circle_params = {}
+        if random.random() < 0.6:
+            circle_params["fill"] = p.next_rgb()
+        else:
+            circle_params["stroke"] = p.next_rgb()
+            circle_params["stroke_width"] = random.randint(3, 6)
+            circle_params["fill"] = "rgba(0, 0, 0, 0.001)"
+
+        s = random.randint(30, 100)
+        cx, cy = random.randint(margin[0], image_size[0] - s // 2), random.randint(margin[1], image_size[1] - s // 2)
+        circle = draw.Circle(cx, cy, s, **circle_params)
+        d.append(circle)
 
     # Draw text
     r, g, b = font_color
+    font_size = random.randint(70, 150)
     x, y = random.randint(margin[0], image_size[0] // 2), random.randint(margin[1] * 2, image_size[1] - margin[1] * 2)
-    d.append(draw.Text('Privet', 70, x, y, fill=f'rgb({r}, {g}, {b})', font_family=font_family))
+    d.append(draw.Text(text, font_size, x, y, fill=f'rgb({r}, {g}, {b})', font_family=font_family))
+
+    ret_params = {'font_color': font_color,
+                  'font_family': font_family,
+                  'seed': seed,
+                  'circles_n': circles_max_n,
+                  'poly_n': poly_max_n,
+                  'sharpen': sharpen,
+                  'font_size': font_size}
 
     """ # Draw a rectangle
     
