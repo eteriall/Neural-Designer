@@ -1,36 +1,13 @@
 Courier
 Skybird
-Arial
-Bahnschrift
-Calibri
-Candara
-Candara Light
-Comic Sans MS
-Consolas
-Corbel
+
 Courier New
-Ebrima
-Franklin Gothic Medium
 Gabriola
-Gadugi
-Impact
 Ink Free
-Leelawadee UI
-Lucida Console
-Lucida Sans Unicode
-Microsoft PhagsPa
-Microsoft Sans Serif
-Microsoft Tai Le
 MingLiU_HKSCS-ExtB
-Myanmar Text
-Nirmala UI
 Segoe Print
 Segoe Script
-Segoe UI
-Sitka
-Tahoma
-Trebuchet MS
-Verdana
+
 KBPayTheLady
 KBTrueBeliever
 Snicker Snack

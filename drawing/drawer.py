@@ -161,7 +161,7 @@ def draw_logo_legacy(palette: Palette,
 def draw_svg_design(file_name: str = 'example.png',
                     add_svg_elements: bool = False,
                     rects_max_n: int = 2,
-                    poly_max_n: int = 3,
+                    poly_max_n: int = 5,
                     poly_max_n_points: int = 4,
                     color_style: str = 'smooth',
                     font_color: tuple = (0, 0, 0),
@@ -199,14 +199,19 @@ def draw_svg_design(file_name: str = 'example.png',
         # Drawing
         d.append(draw.Lines(*points,
                             close=False,
-                            fill=p.next_rgb()))
+                            fill=p.next_rgb(),
+                            stroke="black"))
+
+    s = random.randint(30, 100)
+    cx, cy = random.randint(margin[0], image_size[0] - s // 2), random.randint(margin[1], image_size[1] - s // 2)
+    circle = draw.Circle(cx, cy, s, fill=p.next_rgb())
+    d.append(circle)
+    ret_params = {'font_color': font_color, 'font_family': font_family, 'seed': seed}
 
     # Draw text
     r, g, b = font_color
     x, y = random.randint(margin[0], image_size[0] // 2), random.randint(margin[1] * 2, image_size[1] - margin[1] * 2)
-    d.append(draw.Text('Letaem', 70, x, y, fill=f'rgb({r}, {g}, {b})', font_family=font_family))
-
-    ret_params = {'font_color': font_color, 'font_family': font_family, 'seed': seed}
+    d.append(draw.Text('Privet', 70, x, y, fill=f'rgb({r}, {g}, {b})', font_family=font_family))
 
     """ # Draw a rectangle
     
