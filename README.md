@@ -1,1 +1,1 @@
-# YandexFlaskProject
+# Design Maker - Neural designer 💻
