@@ -3,22 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap"
+          rel="stylesheet">
 </head>
 <body class="Background">
 
 <div class="top-menu-parent">
-    <div class="top-menu-element"><a href="/explore">Explore</a></div>
-    <div class="top-menu-element"><a href="/api-description">API</a></div>
-    <div class="top-menu-element"><a href="/explore">Source Code</a></div>
-    <div class="top-menu-element"><a href="/about">About</a></div>
+    <div class="top-menu-element"><a href="/explore">{{gettext('Explore')}}</a></div>
+    <div class="top-menu-element"><a href="/api-description">{{gettext('API')}}</a></div>
+    <div class="top-menu-element"><a href="https://github.com/eteriall/DesignMaker">{{gettext('Source code')}}</a></div>
+    <div class="top-menu-element"><a href="/about">{{gettext('About us')}}</a></div>
+
+    {% if g.lang_code == 'ru' %}
+    <div class="top-menu-element"><a href="{{ url_for(request.endpoint, lang_code='en') }}">en</a>&nbsp;</div>
+    {% else %}
+    <div class="top-menu-element"><a href="/about"><a href="{{ url_for(request.endpoint, lang_code='ru') }}">ru</a>&nbsp;</a>
+    </div>
+    {% endif %}
+
+
 </div>
 
 <div class="top-login-parent">
-    <div class="top-menu-element"><a href="/login">Sign in</a></div>
-    <div class="top-menu-element"><a href="/registration">Sign Up</a></div>
+    <div class="top-menu-element"><a href="/login">{{gettext('Sign in')}}</a></div>
+    <div class="top-menu-element"><a href="/register">{{gettext('Sign Up')}}</a></div>
 </div>
 
 {% block content %}

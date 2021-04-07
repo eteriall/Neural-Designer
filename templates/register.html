@@ -1,9 +1,18 @@
 {% extends "top-menu.html"%}
 {% block content %}
-<form>
-<input type="text">
-<input type="text">
-<input type="text">
-<input type="submit">
+<form action="{{ url_for('web_interface.register') }}" method="post">
+<div id="form-grid" style="margin-top: 8%;">
+    <h1> {{ gettext('Sign up') }}</h1>
+    <p>{{ gettext('Your name') }}</p>
+    <input type="text" class="form-field" name="name">
+    <p>{{ gettext('Your email') }}</p>
+    <input type="email" class="form-field" name="email">
+    <p>{{ gettext('Create new password') }}</p>
+    <input type="password" class="form-field" name="password">
+    {% if error %}
+    <p style="color: red; margin-bottom: -20px; margin-top: 10px;">{{error}}</p>
+    {% endif %}
+    <input type="submit" class="form-button" value="Complete" >
+</div>
 </form>
 {% endblock %}
