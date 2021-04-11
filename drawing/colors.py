@@ -10,7 +10,7 @@ class Palette:
     def __init__(self,
                  palette_name: str = 'smooth',
                  convert: int = False, seed=random.randint(0, 100000)):
-        with open(path.join(environ.get("RESOURCES_DIR", ""),
+        with open(path.join(environ.get("RESOURCES_DIR", r"C:\Users\User\PycharmProjects\YandexFlaskProject\YandexFlaskProject\resources"),
                             environ.get("PALETTES_JSON_FILE", "palettes.json"))) as palettes_file:
             self.palettes = json.load(palettes_file)[palette_name]
         if convert:

@@ -1,6 +1,12 @@
 pycairo
-flask
-drawSvg
+flask~=1.1.2
+drawSvg~=1.8.1
 svg-stack
-numpy
+numpy==1.20.2
 lxml
+SQLAlchemy~=1.4.6
+WTForms~=2.3.3
+Werkzeug~=1.0.1
+requests~=2.25.1
+image==1.5.33
+matplotlib==3.4.0

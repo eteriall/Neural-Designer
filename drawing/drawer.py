@@ -10,10 +10,11 @@ import numpy as np
 import svg_stack as ss
 from numpy import random
 
+from YandexFlaskProject.vectorizer.png2svg import parse_svg_paths, vectorize
 from .colors import Palette
 
 # Load All elements
-RESOURCES_DIRECTORY = os.environ.get("RESOURCES_DIR", "")
+RESOURCES_DIRECTORY = os.environ.get("RESOURCES_DIR", r"C:\Users\User\PycharmProjects\YandexFlaskProject\YandexFlaskProject\resources")
 elements_directory_name = os.environ.get("ELEMENTS_DIR", "")
 fonts_file_name = os.environ.get("FONTS_TXT_FILE", "installed_fonts.txt")
 palettes_file_name = os.environ.get("PALETTES_JSON_FILE", "palettes.json")
@@ -129,7 +130,14 @@ def draw_logo_legacy(palette: Palette,
         text_x, text_y = random.randint(0, image_size[0] // 4), random.randint(0 + 200, image_size[1] - 200)
         Context.move_to(text_x, text_y)
 
-        Context.text_path("letaem")
+        Context.set_source_rgb(0, 0, 0)
+        Context.text_path("NTI")
+
+        svg = vectorize(public_id='yd0cnq0dxzgjscg1afct')
+        path = parse_svg_paths(svg)[-1][9:-3]
+
+        Context.append_path(cairo.Path(path))
+        Context.stroke()
 
         # Fill text
         if random.random() > 0.7:
@@ -235,7 +243,9 @@ def draw_svg_design(file_name: str = 'example.png',
     font_size = random.randint(70, 150)
     x, y = random.randint(margin[0], image_size[0] // 2), random.randint(margin[1] * 2, image_size[1] - margin[1] * 2)
     d.append(draw.Text(text, font_size, x, y, fill=f'rgb({r}, {g}, {b})', font_family=font_family))
-
+    svg = vectorize(public_id='yd0cnq0dxzgjscg1afct')
+    path = parse_svg_paths(svg)[-1][9:-3]
+    d.append(draw.Path(path, stroke="black"))
     ret_params = {'font_color': font_color,
                   'font_family': font_family,
                   'seed': seed,
@@ -290,3 +300,4 @@ def generate_variations(p, n=10):
     for i in range(n):
         draw_logo_legacy(p, file_name=f'images/{i}.svg', rects_max_n=3, poly_max_n=4)
         p.change_palette()
+

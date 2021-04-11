@@ -1,0 +1,43 @@
+{% extends 'base.html'%}
+{% block content %}
+<form action="{{action}}" method="post" novalidate>
+    <div>
+        {{ form.csrf_token }}
+    </div>
+    <div id="form-grid">
+        <h1>{{form.form_name}}</h1>
+        {% for field in form if field.name != 'csrf_token' %}
+
+        {% if field.type != 'SubmitField' %}
+        <p>{{ field.label() }}</p>
+        {% endif %}
+
+        {% if field.type != 'SubmitField' %}
+        {{ field(class_='form-field') }}
+        {% else %}
+
+        {% if error == 'exist' %}
+        <p style="color: red; margin-bottom: -20px; margin-top: 10px;">
+            This email already exists.<br>
+            <a href="{{url_for('auth.login')}}" style="color: red;">
+                <b><u>Go to login page</u></b>
+            </a>
+        </p>
+        {% elif error %}
+        <p style="color: red; margin-bottom: -20px; margin-top: 10px;">{{error}}</p>
+        {% endif %}
+
+        {{ field(class_='form-button') }}
+        {% endif %}
+
+        {% for error in field.errors %}
+        <p style="color: red; margin-bottom: -20px; margin-top: 10px;">{{ error }}</p>
+        {% endfor %}
+
+        {% endfor %}
+
+
+    </div>
+
+</form>
+{% endblock %}

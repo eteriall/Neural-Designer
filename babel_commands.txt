@@ -1,0 +1,3 @@
+pybabel extract -F babel.cfg -o messages.pot --input-dirs=. - extract texts
+pybabel update -i messages.pot -d translations -l ru        - update translation file
+pybabel compile -d translations                             - compile

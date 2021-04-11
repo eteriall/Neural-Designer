@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-04-07 18:16+0300\n"
+"POT-Creation-Date: 2021-04-08 18:28+0300\n"
 "PO-Revision-Date: 2021-04-07 12:17+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -19,12 +19,37 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.0\n"
 
-#: templates/about.html:3
-msgid "A Neural network which can generate all kinds of designs"
-msgstr ""
-"Нейронная сеть, генерирующая инновационные дизайнерские решения. "
-"Некоммерческий продукт для генерации айдентики для среднего и малого "
-"бизнеса. Сотрудничество - rasskazchikov.work@ya.ru"
+#: templates/about.html:4
+msgid ""
+"A neural network that generates innovative design solutions.\n"
+"    Non-commercial product for generating identity for small and medium "
+"businesses.\n"
+"    Cooperation - rasskazchikov.work@ya.ru"
+msgstr "Нейронная сеть, генерирующая инновационные дизайнерские решения. Некоммерческий продукт для генерации айдентики для среднего и малого бизнеса. Сотрудничество - rasskazchikov.work@ya.ru"
+
+#: templates/base.html:14
+msgid "Explore"
+msgstr "Новости"
+
+#: templates/base.html:15
+msgid "API"
+msgstr "API"
+
+#: templates/base.html:16
+msgid "Source code"
+msgstr "Код проекта"
+
+#: templates/base.html:17
+msgid "About us"
+msgstr "О нас"
+
+#: templates/base.html:38
+msgid "Sign in"
+msgstr "Войти"
+
+#: templates/base.html:39
+msgid "Sign Up"
+msgstr "Регистрация"
 
 #: templates/index.html:3
 msgid "Where the designers work"
@@ -34,47 +59,24 @@ msgstr "Место, где создаются дизайны"
 msgid "A Neural network which can generate all kinds of designs "
 msgstr "Нейронная сеть, генерирующая инновационные дизайнерские решения."
 
-#: templates/login.html:6 templates/top-menu.html:30
-msgid "Sign in"
-msgstr "Войти"
+#~ msgid "Email"
+#~ msgstr "Почта"
 
-#: templates/login.html:7 templates/register.html:8
-msgid "Your email"
-msgstr "Почта"
+#~ msgid "Password"
+#~ msgstr "Пароль"
 
-#: templates/login.html:9
-msgid "Password"
-msgstr "Пароль"
+#~ msgid "Login"
+#~ msgstr "Войти"
 
-#: templates/register.html:5
-msgid "Sign up"
-msgstr "Регистрация"
+#~ msgid "Sign up"
+#~ msgstr "Регистрация"
 
-#: templates/register.html:6
-msgid "Your name"
-msgstr "Имя"
+#~ msgid "Your name"
+#~ msgstr "Имя"
 
-#: templates/register.html:10
-msgid "Create new password"
-msgstr "Пароль"
+#~ msgid "Your email"
+#~ msgstr "Почта"
 
-#: templates/top-menu.html:14
-msgid "Explore"
-msgstr "Новости"
-
-#: templates/top-menu.html:15
-msgid "API"
-msgstr "API"
-
-#: templates/top-menu.html:16
-msgid "Source code"
-msgstr "Код проекта"
-
-#: templates/top-menu.html:17
-msgid "About us"
-msgstr "О нас"
-
-#: templates/top-menu.html:31
-msgid "Sign Up"
-msgstr "Регистрация"
+#~ msgid "Create new password"
+#~ msgstr "Пароль"
 
