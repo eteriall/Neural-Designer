@@ -29,6 +29,7 @@ a {
 
 
 .top-menu-element{
+transition: top 0.3s;
     color: white !important;
     margin-left: 21px;
     font-family: Source Sans Pro;
@@ -171,4 +172,41 @@ width: 24px;
     font-size: 48px;
     text-align: center;
     color: rgba(255, 255, 255, 0.53);
+}
+
+#news-grid {
+    display: grid;
+    margin-top: 100px;
+}
+
+#news-grid > div {
+    width: 500px;
+    margin: auto;
+}
+
+#news-grid > h1 {
+    font-family: Source Sans Pro;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 600;
+    text-align: center;
+    color: #FFFFFF;
+    margin: auto;
+}
+
+#news-grid > p {
+width: 500px;
+    margin: auto;
+    text-align: left;
+    font-family: SF Pro Display;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    margin-top: 30px;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 30px;
+}
+
+#navbar {
+  transition: top 0.3s; /* Transition effect when sliding down (and up) */
 }

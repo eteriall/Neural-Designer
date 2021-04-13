@@ -8,36 +8,44 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap"
           rel="stylesheet">
+    <link  rel="stylesheet"
+           href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/themes/prism.min.css"
+    />
 </head>
 <body class="Background">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-python.min.js"></script>
+<div id="navbar">
 <div class="top-menu-parent">
+    {% if current_user.is_authenticated %}
+    <div class="top-menu-element"><a href="/generate">{{gettext('Generate')}}</a></div>
+    <div class="top-menu-element"><a href="/designs">{{gettext('My designs')}}</a></div>
+    {% else %}
     <div class="top-menu-element"><a href="/">{{gettext('Explore')}}</a></div>
     <div class="top-menu-element"><a href="/api-description">{{gettext('API')}}</a></div>
     <div class="top-menu-element"><a href="https://github.com/eteriall/DesignMaker">{{gettext('Source code')}}</a></div>
     <div class="top-menu-element"><a href="/about">{{gettext('About us')}}</a></div>
+    {% endif %}
 
     {% if show_language != False %}
-
     {% if session['lang_code'] == 'ru' %}
-    <div class="top-menu-element">
+    <div class="top-menu-element" id="language-flag">
         <a href="{{ url_for(request.endpoint, lang_code='en') }}">
             <img class="language-image" src="static/img/en-flag.svg">
         </a>&nbsp;
     </div>
 
     {% else %}
-    <div class="top-menu-element">
+    <div class="top-menu-element" id="language-flag">
         <a href="/about"><a href="{{ url_for(request.endpoint, lang_code='ru') }}">
             <img class="language-image" src="static/img/ru-flag.svg"></a>
         </a>
     </div>
     {% endif %}
-
     {% endif %}
-
-
 </div>
+
 
 <div class="top-login-parent">
     {% if not current_user.is_authenticated %}
@@ -47,7 +55,7 @@
     <div class="top-menu-element"><a href="/me">{{current_user.name}}</a></div>
     {% endif %}
 </div>
-
+</div>
 
 {% block content %}
 {% endblock %}

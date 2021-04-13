@@ -1,6 +1,6 @@
 from flask import Blueprint, url_for, request, render_template
 from flask_babel import lazy_gettext
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import redirect
 
@@ -24,7 +24,7 @@ def redirect_dest(fallback):
 
 @auth.route("/register", methods=['POST', 'GET'])
 def register():
-    if User.is_authenticated:
+    if current_user.is_authenticated:
         return redirect(url_for('web_interface.generation_handler'))
     form = RegistrationForm()
     if request.method == 'POST':
@@ -48,15 +48,9 @@ def register():
     return render_template("form.html", form=form, action=url_for('auth.register'), title=lazy_gettext("Registration"))
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    db_sess = db_session.create_session()
-    return db_sess.query(User).get(user_id)
-
-
 @auth.route("/login", methods=['POST', 'GET'])
 def login():
-    if User.is_authenticated:
+    if current_user.is_authenticated:
         return redirect(url_for('web_interface.generation_handler'))
     form = LoginForm()
     if request.method == 'POST':
@@ -71,6 +65,7 @@ def login():
                                 title=lazy_gettext("Login"),
                                 error=lazy_gettext("Wrong credentials data"))
             login_user(user, remember=True)
+            print("ad")
             return redirect_dest("/generate")
     k = {}
     if request.endpoint != "auth.login":
