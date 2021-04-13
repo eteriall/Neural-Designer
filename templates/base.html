@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{ title }}</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/icon.svg') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap"
@@ -21,8 +22,8 @@
     {% if session['lang_code'] == 'ru' %}
     <div class="top-menu-element">
         <a href="{{ url_for(request.endpoint, lang_code='en') }}">
-        <img class="language-image" src="static/img/en-flag.svg">
-    </a>&nbsp;
+            <img class="language-image" src="static/img/en-flag.svg">
+        </a>&nbsp;
     </div>
 
     {% else %}
@@ -39,8 +40,12 @@
 </div>
 
 <div class="top-login-parent">
+    {% if not current_user.is_authenticated %}
     <div class="top-menu-element"><a href="/login">{{gettext('Sign in')}}</a></div>
     <div class="top-menu-element"><a href="/register">{{gettext('Sign Up')}}</a></div>
+    {% else %}
+    <div class="top-menu-element"><a href="/me">{{current_user.name}}</a></div>
+    {% endif %}
 </div>
 
 

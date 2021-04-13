@@ -18,7 +18,7 @@ def remove_elements(*indexes):
 def vectorize(filename="", detail=0.5, corners=30, colors=1,
               public_id=None):
     if public_id is None:
-        result = uploader.upload(filename)
+        result = uploader.upload(filename, width=512, height=512, crop='limit')
         public_id = result['public_id']
         print(f"Public key: {public_id}, url: {result['secure_url']}")
     svg_image = cloudinary.CloudinaryImage(public_id).image(effect=f"vectorize:"

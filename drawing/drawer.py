@@ -9,12 +9,14 @@ import drawSvg as draw
 import numpy as np
 import svg_stack as ss
 from numpy import random
+import svgutils as su
 
 from YandexFlaskProject.vectorizer.png2svg import parse_svg_paths, vectorize
 from .colors import Palette
 
 # Load All elements
-RESOURCES_DIRECTORY = os.environ.get("RESOURCES_DIR", r"C:\Users\User\PycharmProjects\YandexFlaskProject\YandexFlaskProject\resources")
+RESOURCES_DIRECTORY = os.environ.get("RESOURCES_DIR",
+                                     r"C:\Users\User\PycharmProjects\YandexFlaskProject\YandexFlaskProject\resources")
 elements_directory_name = os.environ.get("ELEMENTS_DIR", "")
 fonts_file_name = os.environ.get("FONTS_TXT_FILE", "installed_fonts.txt")
 palettes_file_name = os.environ.get("PALETTES_JSON_FILE", "palettes.json")
@@ -53,6 +55,17 @@ class Style(draw.DrawingDef):
 
     def writeSvgElement(self, idGen, isDuplicate, outputFile, dryRun, forceDup=False):
         outputFile.write(f'<style type="text/css">{self.import_statement}</style>')
+
+
+class SVG(draw.DrawingDef):
+    TAG_NAME = "svg"
+
+    def __init__(self, svg, **kwargs):
+        self.svg = svg
+        super().__init__(**kwargs)
+
+    def writeSvgElement(self, idGen, isDuplicate, outputFile, dryRun, forceDup=False):
+        outputFile.write(self.svg)
 
 
 class ImportStatement(draw.DrawingBasicElement):
@@ -243,9 +256,13 @@ def draw_svg_design(file_name: str = 'example.png',
     font_size = random.randint(70, 150)
     x, y = random.randint(margin[0], image_size[0] // 2), random.randint(margin[1] * 2, image_size[1] - margin[1] * 2)
     d.append(draw.Text(text, font_size, x, y, fill=f'rgb({r}, {g}, {b})', font_family=font_family))
-    svg = vectorize(public_id='yd0cnq0dxzgjscg1afct')
-    path = parse_svg_paths(svg)[-1][9:-3]
-    d.append(draw.Path(path, stroke="black"))
+
+    icon_d = draw.Drawing(image_size[0], image_size[1], displayInline=False)
+    svg_icon = vectorize(public_id="sgtb7y5h12lg3xwdgyct")
+    path = parse_svg_paths(svg_icon)[-1][9:-3]
+    icon_d.append(draw.Path(path, stroke="black", fill=p.next_rgb(), transform='rotate(180 0 0)'))
+    d.append(SVG(icon_d.asSvg()))
+
     ret_params = {'font_color': font_color,
                   'font_family': font_family,
                   'seed': seed,
@@ -300,4 +317,3 @@ def generate_variations(p, n=10):
     for i in range(n):
         draw_logo_legacy(p, file_name=f'images/{i}.svg', rects_max_n=3, poly_max_n=4)
         p.change_palette()
-

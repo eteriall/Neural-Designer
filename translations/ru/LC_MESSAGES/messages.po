@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-04-08 18:28+0300\n"
+"POT-Creation-Date: 2021-04-13 10:54+0300\n"
 "PO-Revision-Date: 2021-04-07 12:17+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -25,7 +25,10 @@ msgid ""
 "    Non-commercial product for generating identity for small and medium "
 "businesses.\n"
 "    Cooperation - rasskazchikov.work@ya.ru"
-msgstr "Нейронная сеть, генерирующая инновационные дизайнерские решения. Некоммерческий продукт для генерации айдентики для среднего и малого бизнеса. Сотрудничество - rasskazchikov.work@ya.ru"
+msgstr ""
+"Нейронная сеть, генерирующая инновационные дизайнерские решения. "
+"Некоммерческий продукт для генерации айдентики для среднего и малого "
+"бизнеса. Сотрудничество - rasskazchikov.work@ya.ru"
 
 #: templates/base.html:14
 msgid "Explore"
@@ -43,11 +46,11 @@ msgstr "Код проекта"
 msgid "About us"
 msgstr "О нас"
 
-#: templates/base.html:38
+#: templates/base.html:42
 msgid "Sign in"
 msgstr "Войти"
 
-#: templates/base.html:39
+#: templates/base.html:43
 msgid "Sign Up"
 msgstr "Регистрация"
 
@@ -67,6 +70,9 @@ msgstr "Нейронная сеть, генерирующая инновацио
 
 #~ msgid "Login"
 #~ msgstr "Войти"
+
+#~ msgid "Registration"
+#~ msgstr "Регистрация"
 
 #~ msgid "Sign up"
 #~ msgstr "Регистрация"
