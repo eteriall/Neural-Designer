@@ -59,13 +59,12 @@ def login():
             email = request.form.get('email')
             password = request.form.get('password')
             user = db_sess.query(User).filter_by(email=email).first()
-            if not user or not check_password_hash(user.hashed_password, password):
-                render_template("form.html", form=form,
+            if user is None or not check_password_hash(user.hashed_password, password):
+                return render_template("form.html", form=form,
                                 action=url_for('auth.login', next=request.endpoint),
                                 title=lazy_gettext("Login"),
                                 error=lazy_gettext("Wrong credentials data"))
             login_user(user, remember=True)
-            print("ad")
             return redirect_dest("/generate")
     k = {}
     if request.endpoint != "auth.login":

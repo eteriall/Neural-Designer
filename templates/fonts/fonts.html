@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+{% if current_user.projects != [] %}
+<div class="projects-preview-container">
+    {% for font in current_user.fonts %}
+    <div>{{font.name}}</div>
+    {% endfor %}
+</div>
+{% else %}
+<h1 class="error-label unselectable">Empty!</h1>
+<h2 class="error-description unselectable">You haven't generated any font!</h2>
+<h1 class="begin-button" style="width:350px;"><a href="/login">Create new one</a></h1>
+{% endif %}
+{% endblock %}

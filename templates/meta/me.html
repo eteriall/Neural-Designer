@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div id="news-grid">
+    <h1>Welcome, {{current_user.name}}</h1>
+    <p> Your user ID: </p>
+    <input type="text" value="{{current_user.id}}" readonly>
+    <p> Your API key: </p>
+    <input type="text" value="KW56-ASLF-523K-LNA1" readonly id="apikey">
+    <button onclick="myFunction()" id="api_key_button">Copy key</button>
+    <br>
+    <button onclick="window.location.replace('/logout');">Logout</button>
+
+</div>
+
+<script>
+    function set_c() {
+      var apikey_button = document.getElementById("api_key_button");
+      apikey_button.innerHTML = "Copied!"
+    }
+
+    function set_c2() {
+      var apikey_button = document.getElementById("api_key_button");
+      apikey_button.innerHTML = "Copy key"
+    }
+
+
+
+    function myFunction() {
+      var copyText = document.getElementById("apikey");
+      copyText.select();
+      copyText.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      set_c();
+      setTimeout(set_c2, 2000);
+    }
+</script>
+
+{% endblock %}
