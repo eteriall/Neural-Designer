@@ -39,7 +39,7 @@
 
         {% else %}
         <div class="top-menu-element" id="language-flag">
-            <a href="/about"><a href="{{ url_for(request.endpoint, lang_code='ru') }}">
+            <a href="/about"><a href="{{ url_for(request.endpoint, lang_code='ru', **request.args) }}">
                 <img class="language-image" src="static/img/ru-flag.svg"></a>
             </a>
         </div>

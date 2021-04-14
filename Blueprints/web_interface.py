@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, url_for
 from flask_babel import lazy_gettext
 from flask_login import login_required, current_user
 from names_generator import generate_name
@@ -6,6 +6,11 @@ from names_generator import generate_name
 from forms.survey import SurveyForm
 
 from drawing.colors import color_palette
+from werkzeug.exceptions import abort
+from werkzeug.utils import redirect
+
+from data.db_session import create_session
+from data.project import Project
 
 web_interface = Blueprint('web_interface', __name__)
 
@@ -53,13 +58,26 @@ def me():
 
 
 @web_interface.route("/projects")
-def project_view():
+def projects_view():
     return render_template("project/projects.html", title="Projects")
 
 
+@web_interface.route("/projects/<string:name>")
+@login_required
+def project_view(name=""):
+    return render_template("project/project.html", title=name, show_language=False)
+
 @web_interface.route("/create-project")
+@login_required
 def project_creation_handler():
-    return render_template("project/create_project.html", title="New project")
+    project_name = generate_name(style="hyphen")
+    while current_user.has_project(project_name):
+        project_name = generate_name(style="hyphen")
+    db_sess = create_session()
+    p = Project(project_name, current_user)
+    db_sess.add(p)
+    db_sess.commit()
+    return redirect(url_for("web_interface.project_view", name=project_name))
 
 
 @web_interface.route("/fonts")

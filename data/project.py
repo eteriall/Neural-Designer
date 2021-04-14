@@ -9,11 +9,11 @@ from sqlalchemy.orm import relationship
 from .db_session import SqlAlchemyBase
 
 
-class Project(SqlAlchemyBase, UserMixin):
+class Project(SqlAlchemyBase):
 
     def __init__(self, project_name, user_created):
         self.name = project_name
-        self.user_created = user_created
+        self.owner_id = user_created.id
 
     __tablename__ = 'projects'
 

@@ -5,13 +5,11 @@ from sqlalchemy.orm import Session
 import sqlalchemy.ext.declarative as dec
 
 SqlAlchemyBase = dec.declarative_base()
-
 __factory = None
 
 
 def global_init(db_file):
     global __factory
-
     if __factory:
         return
 

@@ -278,13 +278,25 @@ border-radius: 16px;
 
 .projects-preview-container {
     display: grid;
-    grid-template-columns:  1fr 1fr 1fr 1fr;
+    grid-template-columns:  1fr 1fr 1fr;
+    margin-left: 40px;
+    margin-top: 130px;
 }
 
 .projects-preview-container > div{
-width: 200px;
-height: 100px;
+padding: auto;
+font-family: Source Sans Pro;
+font-style: normal;
+font-weight: 600;
+font-size: 48px;
+line-height: 60px;
+text-align: center;
+color: #FFFFFF;
+width: 380px;
+height: 240px;
 border-radius: 30px;
 background: rgba(196, 196, 196, 0.33);
+margin-right: 15px;
+margin-bottom: 15px;
 }
 

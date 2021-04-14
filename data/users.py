@@ -24,3 +24,6 @@ class User(SqlAlchemyBase, UserMixin):
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
     projects = relationship("Project", back_populates="owner")
+
+    def has_project(self, project_name):
+        return any(map(lambda x: x.name == project_name, self.projects))

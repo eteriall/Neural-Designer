@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship
 from .db_session import SqlAlchemyBase
 
 
-class Mockup(SqlAlchemyBase, UserMixin):
+class Mockup(SqlAlchemyBase):
 
     def __init__(self, link):
         self.link = link

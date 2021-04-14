@@ -3,12 +3,13 @@
 {% if current_user.projects != [] %}
 <div class="projects-preview-container">
     {% for project in current_user.projects %}
-    <div>{{project.name}}</div>
+    <div><a href="{{url_for('web_interface.project_view', name=project.name)}}">{{project.name}}</a></div>
     {% endfor %}
+    <div style="background: rgba(229, 229, 229, 0.15);"><a href="{{url_for('web_interface.project_creation_handler')}}">Create new project</a></div>
 </div>
 {% else %}
 <h1 class="error-label unselectable">Empty!</h1>
 <h2 class="error-description unselectable">You haven't created any projects!</h2>
-<h1 class="begin-button" style="width:350px;"><a href="/login">Create new one</a></h1>
+<h1 class="begin-button" style="width:350px;"><a href="/create-project">Create new one</a></h1>
 {% endif %}
 {% endblock %}

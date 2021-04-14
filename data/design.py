@@ -8,7 +8,7 @@ from sqlalchemy.orm import relationship
 from .db_session import SqlAlchemyBase
 
 
-class Design(SqlAlchemyBase, UserMixin):
+class Design(SqlAlchemyBase):
 
     def __init__(self, svg, meta={}):
         self.svg = svg
