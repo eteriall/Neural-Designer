@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
 <div id="news-grid">
-    <h1>Welcome, {{current_user.name}}</h1>
-    <p> Your user ID: </p>
+    <h1>{{gettext('Welcome')}}, {{current_user.name}}</h1>
+    <p> {{gettext('Your user ID')}}: </p>
     <input type="text" value="{{current_user.id}}" readonly>
-    <p> Your API key: </p>
+    <p> {{gettext('Your API key')}}: </p>
     <input type="text" value="KW56-ASLF-523K-LNA1" readonly id="apikey">
-    <button onclick="myFunction()" id="api_key_button">Copy key</button>
+    <button onclick="myFunction()" id="api_key_button">{{gettext('Copy key')}}</button>
     <br>
-    <button onclick="window.location.replace('/logout');">Logout</button>
+    <button onclick="window.location.replace('/logout');">{{gettext('Logout')}}</button>
 
 </div>
 
@@ -33,6 +33,7 @@
       set_c();
       setTimeout(set_c2, 2000);
     }
+
 </script>
 
 {% endblock %}

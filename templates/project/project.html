@@ -1,4 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-
+<div class="designs-preview-container">
+{% for design in project.designs %}
+<div class="design-preview-box">
+    {{ design.get_svg() | safe }}
+    <p class="design-preview-time">Edited 23 minutes ago</p>
+</div>
+</div>
+{% endfor %}
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-{% if current_user.projects != [] %}
+{% if current_user.fonts != [] %}
 <div class="projects-preview-container">
     {% for font in current_user.fonts %}
     <div>{{font.name}}</div>

@@ -8,7 +8,7 @@ api = Blueprint("api", __name__)
 
 @api.route('/api/generate/<string:text>')
 def logo_generator(text):
-    seed = random.randint(0, 4294967295)
+    seed = random.randint(0, 2_147_483_648)
     b_coef = bouba_kiki(text)
     params, svg = draw_svg_design(seed=seed,
                                   text=text,
@@ -16,7 +16,7 @@ def logo_generator(text):
                                   color_style="epic")
     encoded_output = svg[svg.find('<svg'):]
 
-    return render_template("design.html", svg=encoded_output, data=params)
+    return render_template("design/design.html", svg=encoded_output, data=params)
 
 
 @api.route('/api/save_logo/<int:seed>')

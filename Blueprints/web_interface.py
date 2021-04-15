@@ -12,6 +12,8 @@ from werkzeug.utils import redirect
 from data.db_session import create_session
 from data.project import Project
 
+from data.design import Design
+
 web_interface = Blueprint('web_interface', __name__)
 
 
@@ -64,19 +66,43 @@ def projects_view():
 
 @web_interface.route("/projects/<string:name>")
 @login_required
-def project_view(name=""):
-    return render_template("project/project.html", title=name, show_language=False)
+def project_view(name):
+    p = current_user.get_project(name)
+    if p is not None:
+        return render_template("project/project.html", title=name, show_language=False, project=p)
+    return abort(404)
+
+
+@web_interface.route("/projects/<string:name>/create-design", methods=['GET', 'POST'])
+@login_required
+def design_creation_handler(name):
+    p = current_user.get_project(name)
+    if p is not None:
+        if request.method == 'GET':
+            return render_template("design/design.html", title=name, show_language=False, project=p)
+        if request.method == 'POST':
+            svg_string = request.json.get('svg')
+            if svg_string is not None:
+                db_sess = create_session()
+                d = Design(svg_string, p)
+                db_sess.add(d)
+                db_sess.commit()
+                return "Success", 200
+            return abort(400)
+    return abort(404)
+
 
 @web_interface.route("/create-project")
 @login_required
 def project_creation_handler():
     project_name = generate_name(style="hyphen")
-    while current_user.has_project(project_name):
+    while current_user.get_project(project_name) is not None:
         project_name = generate_name(style="hyphen")
     db_sess = create_session()
     p = Project(project_name, current_user)
     db_sess.add(p)
     db_sess.commit()
+    db_sess.close()
     return redirect(url_for("web_interface.project_view", name=project_name))
 
 

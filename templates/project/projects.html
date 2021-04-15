@@ -3,13 +3,19 @@
 {% if current_user.projects != [] %}
 <div class="projects-preview-container">
     {% for project in current_user.projects %}
-    <div><a href="{{url_for('web_interface.project_view', name=project.name)}}">{{project.name}}</a></div>
+    <div class="project-preview" onclick="location.href='/projects/{{project.name}}'">
+            <h1 class="project-preview-title">{{project.name}}</h1>
+            <p class="project-preview-time">Edited 12 minutes ago</p>
+    </div>
     {% endfor %}
-    <div style="background: rgba(229, 229, 229, 0.15);"><a href="{{url_for('web_interface.project_creation_handler')}}">Create new project</a></div>
+    <div onclick="location.href='/create-project'" class="project-preview" style="opacity: 0.5;">
+            <h1 class="project-preview-title">{{gettext('Create new project')}}</h1>
+            <p class="project-preview-time">{{gettext('New project will appear here')}}</p>
+    </div>
 </div>
 {% else %}
-<h1 class="error-label unselectable">Empty!</h1>
-<h2 class="error-description unselectable">You haven't created any projects!</h2>
-<h1 class="begin-button" style="width:350px;"><a href="/create-project">Create new one</a></h1>
+<h1 class="error-label unselectable">{{ gettext('Empty!') }}</h1>
+<h2 class="error-description unselectable">{{ gettext("You haven't created any projects!") }}</h2>
+<h1 class="begin-button" style="width:350px;"><a href="/create-project">{{gettext('Create new one')}}</a></h1>
 {% endif %}
 {% endblock %}

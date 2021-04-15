@@ -18,7 +18,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-python.min.js"></script>
 <div id="navbar">
     <div class="top-menu-parent">
-        {% if current_user.is_authenticated %}
+        {% if project %}
+        <div class="top-menu-element project-name"><a href="/projects">{{project.name}}</a></div>
+        {% elif current_user.is_authenticated %}
         <div class="top-menu-element"><a href="/projects">{{gettext('Projects')}}</a></div>
         <div class="top-menu-element"><a href="/fonts">{{gettext('Fonts')}}</a></div>
         {% else %}
@@ -39,7 +41,7 @@
 
         {% else %}
         <div class="top-menu-element" id="language-flag">
-            <a href="/about"><a href="{{ url_for(request.endpoint, lang_code='ru', **request.args) }}">
+            <a href="/about"><a href="{{ url_for(request.endpoint, lang_code='ru') }}">
                 <img class="language-image" src="static/img/ru-flag.svg"></a>
             </a>
         </div>

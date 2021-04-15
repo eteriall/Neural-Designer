@@ -29,3 +29,9 @@ class Project(SqlAlchemyBase):
 
     def __getitem__(self, item):
         return json.loads(self.meta)[item]
+
+    def get_preview(self):
+        if not self.designs:
+            return '<path d="M215 0H0V512H512V0Z" fill="white"/>'
+        preview = self.designs[-1].get_svg(include_header=False)
+        return preview

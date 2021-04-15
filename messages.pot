@@ -1,19 +1,17 @@
-# Russian translations for PROJECT.
+# Translations template for PROJECT.
 # Copyright (C) 2021 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
 #
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-04-15 11:39+0300\n"
-"PO-Revision-Date: 2021-04-07 12:17+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language: ru\n"
-"Language-Team: ru <LL@li.org>\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,35 +19,35 @@ msgstr ""
 
 #: templates/base.html:24
 msgid "Projects"
-msgstr "Проекты"
+msgstr ""
 
 #: templates/base.html:25
 msgid "Fonts"
-msgstr "Шрифты"
+msgstr ""
 
 #: templates/base.html:27
 msgid "Explore"
-msgstr "Новости"
+msgstr ""
 
 #: templates/base.html:28
 msgid "API"
-msgstr "API"
+msgstr ""
 
 #: templates/base.html:29
 msgid "Source code"
-msgstr "Код проекта"
+msgstr ""
 
 #: templates/base.html:31
 msgid "About us"
-msgstr "О нас"
+msgstr ""
 
 #: templates/base.html:55
 msgid "Sign in"
-msgstr "Войти"
+msgstr ""
 
 #: templates/base.html:56
 msgid "Sign Up"
-msgstr "Регистрация"
+msgstr ""
 
 #: templates/meta/about.html:4
 msgid ""
@@ -58,9 +56,6 @@ msgid ""
 "businesses.\n"
 "    Cooperation - rasskazchikov.work@ya.ru"
 msgstr ""
-"Нейронная сеть, генерирующая инновационные дизайнерские решения. "
-"Некоммерческий продукт для генерации айдентики для среднего и малого "
-"бизнеса. Сотрудничество - rasskazchikov.work@ya.ru"
 
 #: templates/meta/api_description.html:5
 msgid "The example request"
@@ -68,48 +63,24 @@ msgstr ""
 
 #: templates/meta/api_description.html:6
 msgid "Example POST request to neuraldesigners.com/api."
-msgstr "Пример POST-запроса к neuraldesigners.com/api"
+msgstr ""
 
 #: templates/meta/api_description.html:19
 msgid ""
 "JSON Response contain errors, if some fields are missing, or some values "
 "are wrong. If operation is successful response contains JSON with svg "
 "image:"
-msgstr "Ответ в формате JSON содержит описания ошибок, если в запросе"
+msgstr ""
 
 #: templates/meta/index.html:3
 msgid "Where the designs are created"
-msgstr "Место, где создаются дизайны"
+msgstr ""
 
 #: templates/meta/index.html:4
 msgid "A Neural network which can generate all kinds of designs "
-msgstr "Нейронная сеть, генерирующая инновационные дизайнерские решения."
+msgstr ""
 
 #: templates/meta/index.html:6
 msgid "Begin"
 msgstr ""
-
-#~ msgid "Email"
-#~ msgstr "Почта"
-
-#~ msgid "Password"
-#~ msgstr "Пароль"
-
-#~ msgid "Login"
-#~ msgstr "Войти"
-
-#~ msgid "Registration"
-#~ msgstr "Регистрация"
-
-#~ msgid "Sign up"
-#~ msgstr "Регистрация"
-
-#~ msgid "Your name"
-#~ msgstr "Имя"
-
-#~ msgid "Your email"
-#~ msgstr "Почта"
-
-#~ msgid "Create new password"
-#~ msgstr "Пароль"
 

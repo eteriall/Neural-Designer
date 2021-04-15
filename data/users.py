@@ -25,5 +25,5 @@ class User(SqlAlchemyBase, UserMixin):
                                      default=datetime.datetime.now)
     projects = relationship("Project", back_populates="owner")
 
-    def has_project(self, project_name):
-        return any(map(lambda x: x.name == project_name, self.projects))
+    def get_project(self, project_name):
+        return {x.name: x for x in self.projects}.get(project_name)

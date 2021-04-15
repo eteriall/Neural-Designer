@@ -2,8 +2,8 @@
 
 {% block content %}
 <div id="news-grid" style="margin-bottom:100px;">
-<h1>The example request</h1>
-  <p>Example POST request to neuraldesigners.com/api.</p>
+<h1>{{gettext('The example request')}}</h1>
+  <p>{{gettext('Example POST request to neuraldesigners.com/api.')}}</p>
   <div>
   <pre><code class="language-python">{
 "api_key": "XXXX-XXXX-XXXX-XXXX",
@@ -16,7 +16,7 @@
 "image_size": (512, 512)
 }</code></pre>
   </div>
-  <p>JSON Response contain errors, if some fields are missing, or some values are wrong. If operation is successful response contains JSON with svg image:</p>
+  <p>{{gettext('JSON Response contain errors, if some fields are missing, or some values are wrong. If operation is successful response contains JSON with svg image:')}}</p>
   <div><pre class="language-python"><code>{"svg-text": ***svg-code***,
 "svg-file": ***byte-array***}
 </code></pre></div>
