@@ -1,1 +1,1 @@
-# Design Maker - Neural designer 💻
+# Neural designer 💻
