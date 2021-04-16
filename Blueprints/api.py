@@ -16,7 +16,7 @@ def logo_generator(text):
                                   color_style="epic")
     encoded_output = svg[svg.find('<svg'):]
 
-    return render_template("design/design.html", svg=encoded_output, data=params)
+    return encoded_output
 
 
 @api.route('/api/save_logo/<int:seed>')

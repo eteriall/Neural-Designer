@@ -30,8 +30,17 @@ class Project(SqlAlchemyBase):
     def __getitem__(self, item):
         return json.loads(self.meta)[item]
 
-    def get_preview(self):
+    def get_preview(self, s=210):
         if not self.designs:
-            return '<path d="M215 0H0V512H512V0Z" fill="white"/>'
-        preview = self.designs[-1].get_svg(include_header=False)
+            return """<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect y="22" width="160" height="138" fill="#AAAAAA"/>
+</svg>
+"""
+        preview = self.designs[-1].get_svg(s=s)
         return preview
+
+    def get_design(self, design_id):
+        for design in self.designs:
+            if design.id == design_id:
+                return design
+        return None

@@ -257,11 +257,11 @@ def draw_svg_design(file_name: str = 'example.png',
     x, y = random.randint(margin[0], image_size[0] // 2), random.randint(margin[1] * 2, image_size[1] - margin[1] * 2)
     d.append(draw.Text(text, font_size, x, y, fill=f'rgb({r}, {g}, {b})', font_family=font_family))
 
-    icon_d = draw.Drawing(image_size[0], image_size[1], displayInline=False)
+    """icon_d = draw.Drawing(image_size[0], image_size[1], displayInline=False)
     svg_icon = vectorize(public_id="sgtb7y5h12lg3xwdgyct")
     path = parse_svg_paths(svg_icon)[-1][9:-3]
     icon_d.append(draw.Path(path, stroke="black", fill=p.next_rgb(), transform='rotate(180 0 0)'))
-    d.append(SVG(icon_d.asSvg()))
+    d.append(SVG(icon_d.asSvg()))"""
 
     ret_params = {'font_color': font_color,
                   'font_family': font_family,

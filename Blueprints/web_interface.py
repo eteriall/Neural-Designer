@@ -14,6 +14,10 @@ from data.project import Project
 
 from data.design import Design
 
+from drawing.drawer import draw_svg_design
+
+from bouba_kiki import bouba_kiki
+
 web_interface = Blueprint('web_interface', __name__)
 
 
@@ -37,12 +41,6 @@ def about():
 @web_interface.route("/api-description")
 def api_description():
     return render_template('meta/api_description.html', title=lazy_gettext("API Description"))
-
-
-@web_interface.route("/generate")
-@login_required
-def generation_handler():
-    return render_template("design/logo_generation.html", title=lazy_gettext("Generate"))
 
 
 @web_interface.route('/palettes')
@@ -73,6 +71,20 @@ def project_view(name):
     return abort(404)
 
 
+@web_interface.route("/projects/<string:name>/<int:design_id>")
+@login_required
+def design_view(name, design_id):
+    p = current_user.get_project(name)
+    if p is not None:
+        d = p.get_design(int(design_id))
+        if d is not None:
+            return render_template("design/design.html", title=name,
+                                   show_language=False,
+                                   project=p,
+                                   design=d)
+    return abort(404)
+
+
 @web_interface.route("/projects/<string:name>/create-design", methods=['GET', 'POST'])
 @login_required
 def design_creation_handler(name):
@@ -88,6 +100,11 @@ def design_creation_handler(name):
                 db_sess.add(d)
                 db_sess.commit()
                 return "Success", 200
+            regenerate = request.json.get("regenerate")
+            if regenerate is not None:
+                text = request.json.get("text")
+                svg_design = draw_svg_design(text=text, sharpen=bouba_kiki(text))
+                return svg_design[1], 200
             return abort(400)
     return abort(404)
 
@@ -114,3 +131,4 @@ def fonts_view():
 @web_interface.route("/create-font")
 def font_creation_handler():
     return render_template("fonts/create_font.html", title="New font")
+

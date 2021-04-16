@@ -5,6 +5,8 @@ def bouba_kiki(word, language="en"):
     if n > 0: word is soft
     if n == 0: word is neutral
     """
+    if len(word) == 0:
+        return 0
     l_t = {"ru": ('цйкшщзхфпржчт', 'бвгдлмн'),
            "en": ("bgmlwv", "dqrtpzxcksj")}
     hl, sl = l_t[language]

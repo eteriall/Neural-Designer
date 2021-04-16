@@ -29,12 +29,16 @@ class Design(SqlAlchemyBase):
     def __getitem__(self, item):
         return json.loads(self.meta)[item]
 
-    def get_svg(self, include_header=True):
-        if not include_header:
-            return self.svg
+    def get_svg(self, include_header=True, s=512):
+        if include_header:
+            svg = self.svg.replace("512", str(s), 2)
+            return svg
         else:
             svg = " ".join(self.svg.split())
             svg = svg.replace(
                 '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"'
                 ' width="512" height="512" viewBox="0 -512 512 512">', ' ')
             return svg[:-6]
+
+    def get_raw_svg(self):
+        pass

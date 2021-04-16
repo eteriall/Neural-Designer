@@ -4,12 +4,13 @@
 <div class="projects-preview-container">
     {% for project in current_user.projects %}
     <div class="project-preview" onclick="location.href='/projects/{{project.name}}'">
+            {{project.get_preview(s=160) | safe}}
             <h1 class="project-preview-title">{{project.name}}</h1>
             <p class="project-preview-time">Edited 12 minutes ago</p>
     </div>
     {% endfor %}
     <div onclick="location.href='/create-project'" class="project-preview" style="opacity: 0.5;">
-            <h1 class="project-preview-title">{{gettext('Create new project')}}</h1>
+            <h1 class="project-preview-title" style="margin-top: 150px;">{{gettext('Create new project')}}</h1>
             <p class="project-preview-time">{{gettext('New project will appear here')}}</p>
     </div>
 </div>

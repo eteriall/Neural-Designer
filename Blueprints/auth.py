@@ -25,7 +25,7 @@ def redirect_dest(fallback):
 @auth.route("/register", methods=['POST', 'GET'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('web_interface.generation_handler'))
+        return redirect(url_for('web_interface.projects_view'))
     form = RegistrationForm()
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -51,7 +51,7 @@ def register():
 @auth.route("/login", methods=['POST', 'GET'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('web_interface.generation_handler'))
+        return redirect(url_for('web_interface.projects_view'))
     form = LoginForm()
     if request.method == 'POST':
         if form.validate_on_submit():
@@ -65,7 +65,7 @@ def login():
                                 title=lazy_gettext("Login"),
                                 error=lazy_gettext("Wrong credentials data"))
             login_user(user, remember=True)
-            return redirect_dest("/generate")
+            return redirect_dest("/projects")
     k = {}
     if request.endpoint != "auth.login":
         k["next"] = request.endpoint

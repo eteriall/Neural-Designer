@@ -15,6 +15,13 @@ a {
     color: white;
 }
 
+a:hover{
+text-decoration: underline;
+text-decoration-thickness: 2px;
+text-decoration-style: dotted;
+text-decoration-color: rgba(255, 255, 255, 0.7);
+}
+
 .top-menu-parent{
     position: absolute;
     left: 40px;
@@ -51,7 +58,7 @@ transition: top 0.3s;
     font-weight: 600;
     text-align: center;
     left: 50%;
-    margin-top: 209px;
+    margin-top: 160px;
 }
 
 .welcome-description{
@@ -283,12 +290,6 @@ border-radius: 16px;
     margin-top: 90px;
 }
 
-.designs-preview-container{
-    display: grid;
-    grid-template-columns:  1fr 1fr 1fr;
-    margin-left: 60px;
-    margin-top: 100px;
-}
 
 .project-preview{
 opacity: 0.8;
@@ -313,11 +314,12 @@ transition: 0.2s;
 
 .project-preview:hover{
 opacity: 1;
+cursor: pointer;
 }
 
 .project-preview-title{
-margin-left: 10px;
-margin-top: 150px;
+margin-left: 15px;
+margin-top: -10px;
 font-family: Source Sans Pro;
 font-style: normal;
 font-weight: normal;
@@ -330,7 +332,7 @@ text-align: left;
 
 .project-preview-time{
 text-align: left;
-margin-left: 10px;
+margin-left: 15px;
 margin-top: -25px;
 font-family: Source Sans Pro;
 font-style: normal;
@@ -350,26 +352,65 @@ font-size: 40px !important;
     background: transparent;
 }
 
+.designs-preview-container{
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    margin-left: 60px;
+    margin-right: 50px;
+    margin-top: 130px;
+    margin-bottom: 20px;
+    gap: 18px;
+}
+
 .design-preview-box{
     opacity: 0.95;
     width: 210px;
     height: 230px;
     border-radius: 9px;
     background: linear-gradient(122.66deg, rgba(255, 255, 255, 0.21) 3.99%, rgba(255, 255, 255, 0.14) 46.47%, rgba(255, 255, 255, 0.17) 88.87%);
+    transition: 0.2s;
 }
 
 .design-preview-box:hover{
-    opacity: 1;
+    cursor: pointer;
+    opacity: 1 !important;
 }
 
 .design-preview-time{
-left: 11px;
-top: 197px;
+    margin-top: -17px;
+    margin-left: 10px;
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 23px;
+    color: #FFFFFF;
+}
+
+
+.create-new-design-text{
+width: 210px;
+height: 90px;
+margin-top:54px;
+font-family: Source Sans Pro;
+font-style: normal;
+font-weight: 300;
+font-size: 36px;
+line-height: 45px;
+text-align: center;
+color: #FFFFFF;
+}
+
+.create-new-design-description{
+width: 210px;
+height: 46px;
 
 font-family: Source Sans Pro;
 font-style: normal;
 font-weight: 300;
 font-size: 18px;
 line-height: 23px;
+text-align: center;
+
 color: #FFFFFF;
 }

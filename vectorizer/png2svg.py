@@ -15,7 +15,7 @@ def remove_elements(*indexes):
         pass
 
 
-def vectorize(filename="", detail=0.5, corners=30, colors=1,
+def vectorize(filename="", detail=0.5, corners=5, colors=1,
               public_id=None):
     if public_id is None:
         result = uploader.upload(filename, width=512, height=512, crop='limit')
@@ -31,5 +31,5 @@ def vectorize(filename="", detail=0.5, corners=30, colors=1,
     return svg_file
 
 
-svg = vectorize(public_id='yd0cnq0dxzgjscg1afct')
-path = parse_svg_paths(svg)[-1]
+"""svg = vectorize(public_id='1591193716_0_759_2047_1910_1920x0_80_0_0_88a906754a5f1a03743ff590e400e38f_kdcvkz')
+print(svg)"""

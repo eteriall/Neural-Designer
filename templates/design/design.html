@@ -1,13 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
+{% if design %}
+{{design.get_svg(s=512) | safe}}
+{% else %}
 <div id="svg-design">
     {{svg | safe}}
 </div>
+<button onclick="saveDesign();"> Save</button><br>
+<input type="text" id="design-text"><br>
+<button onclick="regenerateDesign();"> Regenerate</button><br>
+{% endif %}
 
-<button onclick="saveDesign();"> Save </button>
 <script>
 const Http = new XMLHttpRequest();
 const url = window.location.href;
+
+
 
 function saveDesign(){
     var xhr = new XMLHttpRequest();
@@ -21,6 +29,22 @@ function saveDesign(){
     var data = JSON.stringify({"svg": document.getElementById("svg-design").innerHTML});
     xhr.send(data);
 }
+
+function regenerateDesign(){
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log("recieved new design");
+            document.getElementById("svg-design").innerHTML = xhr.responseText;
+        }
+    };
+    var data = JSON.stringify({"regenerate": true, "text": document.getElementById("design-text").value});
+    xhr.send(data);
+}
+
+
 
 </script>
 <p>{{data}}</p>

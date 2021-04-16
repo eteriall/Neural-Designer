@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="designs-preview-container">
-{% for design in project.designs %}
-<div class="design-preview-box">
-    {{ design.get_svg() | safe }}
-    <p class="design-preview-time">Edited 23 minutes ago</p>
+    {% for design in project.designs %}
+    <div class="design-preview-box" onclick="location.href='/projects/{{project.name}}/{{design.id}}'">
+        {{ design.get_svg(s=210) | safe }}
+        <p class="design-preview-time">Edited 23 minutes ago</p>
+    </div>
+    {% endfor %}
+    <div class="design-preview-box" onclick="location.href='/projects/{{project.name}}/create-design'" style="opacity: 0.5;" >
+        <h1 class="create-new-design-text">Create new design</h1>
+        <p class="create-new-design-description">{{gettext('New design will<br>appear here')}}</p>
+    </div>
 </div>
-</div>
-{% endfor %}
 {% endblock %}
