@@ -21,6 +21,11 @@ from bouba_kiki import bouba_kiki
 web_interface = Blueprint('web_interface', __name__)
 
 
+def resize_svg(svg, s=400):
+    svg = svg.replace("512", str(s), 2)
+    return svg
+
+
 @web_interface.route("/survey")
 @login_required
 def survey():
@@ -85,6 +90,28 @@ def design_view(name, design_id):
     return abort(404)
 
 
+@web_interface.route("/projects/<string:name>/settings", methods=["POST", "GET"])
+@login_required
+def project_settings(name):
+    p = current_user.get_project(name)
+    if p is not None:
+        if request.method == "GET":
+            return render_template("project/project-settings.html", title=name,
+                                   show_language=False,
+                                   project=p)
+        if request.method == "POST":
+            js = request.json
+            project_name = js["name"]
+            db_sess = create_session()
+            p = db_sess.query(Project).filter_by(owner_id=current_user.id, name=name).first()
+            if p is None:
+                return abort(404)
+            p.name = project_name
+            db_sess.commit()
+            return "Success", 200
+    return abort(404)
+
+
 @web_interface.route("/projects/<string:name>/create-design", methods=['GET', 'POST'])
 @login_required
 def design_creation_handler(name):
@@ -131,4 +158,3 @@ def fonts_view():
 @web_interface.route("/create-font")
 def font_creation_handler():
     return render_template("fonts/create_font.html", title="New font")
-

@@ -23,6 +23,9 @@
         <div class="top-menu-element project-name">
             <a href="/projects">projects</a> / <a href="/projects/{{project.name}}">{{project.name}}</a>
             {% if design %} / <a href="/projects/{{project.name}}/{{design.id}}">design-{{design.id}}</a>
+            {% else %}
+            <a href="/projects/{{project.name}}/settings"><img class="settings-icon"
+                                                               src="/static/img/settings-icon.svg"></a>
             {% endif %}
         </div>
 
