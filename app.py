@@ -36,6 +36,10 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 app.config['TRAP_HTTP_EXCEPTIONS'] = True
 
+app.register_blueprint(web_interface)
+app.register_blueprint(auth)
+app.register_blueprint(api)
+
 
 @app.errorhandler(404)
 def not_found_error(error):
@@ -86,9 +90,5 @@ def handle_needs_login():
 
 if __name__ == "__main__":
     # Adding blueprints
-    app.register_blueprint(web_interface)
-    app.register_blueprint(auth)
-    app.register_blueprint(api)
-
     # Running app
     app.run()
