@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div id="news-grid">
+    <input type="text" value="{{ project.name }}" id="name">
+    <button onclick="saveChanges();"></button>
+</div>
+
+<script>
+const url = window.location.href;
+
+function saveChanges(){
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log("saved changes");
+            var url = window.location.href;
+            url = url.split("/");
+            url.pop();
+            url.pop();
+            url = url.join("/");
+            window.location.replace(url + "/" + document.getElementById("name").value);
+        }
+    };
+    var data = JSON.stringify({"name": document.getElementById("name").value});
+    xhr.send(data);
+}
+
+</script>
+{% endblock %}

@@ -1,21 +1,55 @@
 {% extends "base.html" %}
 {% block content %}
 {% if design %}
-{{design.get_svg(s=512) | safe}}
+<div id="news-grid">
+<div id="svg-main">
+{{design.get_svg(s=400) | safe}}
+</div>
+<button onclick="copy();">Copy to clipboard</button><br>
+</div>
+
 {% else %}
+<div id="news-grid">
 <div id="svg-design">
     {{svg | safe}}
 </div>
-<button onclick="saveDesign();"> Save</button><br>
 <input type="text" id="design-text"><br>
-<button onclick="regenerateDesign();"> Regenerate</button><br>
+<button onclick="regenerateDesign();">Generate</button>
+<button onclick="saveDesign();">Save</button>
+</div>
 {% endif %}
 
 <script>
-const Http = new XMLHttpRequest();
 const url = window.location.href;
 
+function copyToClipboard(text) {
+    if (window.clipboardData && window.clipboardData.setData) {
+        // Internet Explorer-specific code path to prevent textarea being shown while dialog is visible.
+        return window.clipboardData.setData("Text", text);
 
+    }
+    else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+        var textarea = document.createElement("textarea");
+        textarea.textContent = text;
+        textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in Microsoft Edge.
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            return document.execCommand("copy");  // Security exception may be thrown by some browsers.
+        }
+        catch (ex) {
+            console.warn("Copy to clipboard failed.", ex);
+            return false;
+        }
+        finally {
+            document.body.removeChild(textarea);
+        }
+    }
+}
+
+function copy(){
+    copyToClipboard(document.getElementById("svg-main").innerHTML)
+}
 
 function saveDesign(){
     var xhr = new XMLHttpRequest();
@@ -43,9 +77,6 @@ function regenerateDesign(){
     var data = JSON.stringify({"regenerate": true, "text": document.getElementById("design-text").value});
     xhr.send(data);
 }
-
-
-
 </script>
 <p>{{data}}</p>
 {% endblock %}
