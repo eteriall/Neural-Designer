@@ -16,7 +16,7 @@ from .colors import Palette
 
 # Load All elements
 RESOURCES_DIRECTORY = os.environ.get("RESOURCES_DIR",
-                                     r"/home/admin/YandexFlaskProject/resources")
+                                     r"resources")
 elements_directory_name = os.environ.get("ELEMENTS_DIR", "")
 fonts_file_name = os.environ.get("FONTS_TXT_FILE", "installed_fonts.txt")
 palettes_file_name = os.environ.get("PALETTES_JSON_FILE", "palettes.json")
